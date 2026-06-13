@@ -20,6 +20,19 @@ export class Road {
     this.sideW = s.side_lines_width;
     this.sideColors = s.side_lines_colors.map(rgb);
 
+    this.scroll = 0;
+    this._computeGeometry();
+  }
+
+  // Recompute centered-road geometry from the current window size. Called on
+  // construction and whenever the viewport changes so the road stays centered.
+  resize(config) {
+    this.windowWidth = config.window.width;
+    this.windowHeight = config.window.height;
+    this._computeGeometry();
+  }
+
+  _computeGeometry() {
     const roadPixelWidth = this.laneCount * this.laneWidth;
     this.roadLeft = ((this.windowWidth / 2) | 0) - ((roadPixelWidth / 2) | 0);
     this.roadRight = this.roadLeft + roadPixelWidth;
@@ -28,8 +41,6 @@ export class Road {
     for (let i = 1; i < this.laneCount; i++) {
       this.laneLineXs.push(this.roadLeft + this.laneWidth * i - ((this.linesWidth / 2) | 0));
     }
-
-    this.scroll = 0;
   }
 
   // 1-based lane index -> top-left x that centers a sprite of the given width.

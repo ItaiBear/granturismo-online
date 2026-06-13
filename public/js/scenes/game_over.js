@@ -96,6 +96,10 @@ export class GameOverScene extends Scene {
     this.muteIconRect = { x: 60, y: 10, w: 40, h: 40 };
   }
 
+  onResize() {
+    this._buildLayout();
+  }
+
   _absRect(offset, size) {
     const cx = this.panel.centerX;
     const cy = trunc(this.panel.centerY);

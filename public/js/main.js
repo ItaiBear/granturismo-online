@@ -5,8 +5,7 @@ import { App } from "./app.js";
 
 async function boot() {
   const canvas = document.getElementById("game");
-  canvas.width = config.window.width;
-  canvas.height = config.window.height;
+  // Canvas sizing is handled responsively by App (fills the viewport).
 
   const music = new Music(config.audio.music_file, config.audio.default_volume);
   if (config.audio.start_muted) music.mute();

@@ -35,11 +35,29 @@ export class App {
     this._last = 0;
     this._musicStarted = false;
 
+    this._resize();
     this._bindEvents();
+    window.addEventListener("resize", () => this._resize());
+    window.addEventListener("orientationchange", () => this._resize());
   }
 
   now() {
     return performance.now();
+  }
+
+  // Make the canvas fill the viewport at native pixel density, and feed the live
+  // CSS-pixel dimensions to the game world so everything reflows (no letterbox).
+  _resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, window.innerWidth);
+    const h = Math.max(1, window.innerHeight);
+    this.config.window.width = w;
+    this.config.window.height = h;
+    this.canvas.width = Math.round(w * dpr);
+    this.canvas.height = Math.round(h * dpr);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (this.world && this.world.road) this.world.road.resize(this.config);
+    if (this.scene && typeof this.scene.onResize === "function") this.scene.onResize();
   }
 
   setScene(factory, ...args) {
@@ -86,8 +104,8 @@ export class App {
 
   _toInternal(clientX, clientY) {
     const rect = this.canvas.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width) * this.canvas.width;
-    const y = ((clientY - rect.top) / rect.height) * this.canvas.height;
+    const x = ((clientX - rect.left) / rect.width) * this.config.window.width;
+    const y = ((clientY - rect.top) / rect.height) * this.config.window.height;
     return [x, y];
   }
 

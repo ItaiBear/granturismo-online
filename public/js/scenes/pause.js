@@ -6,22 +6,8 @@ export class PauseScene extends Scene {
   constructor(app, returnTo) {
     super(app);
     this._returnTo = returnTo;
-    const win = this.config.window;
-
-    // Snapshot the current frame and veil it.
+    // Snapshot the current (device-pixel) frame; drawn scaled to CSS pixels.
     this._backdrop = app.snapshot();
-    const bctx = this._backdrop.getContext("2d");
-    bctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-    bctx.fillRect(0, 0, win.width, win.height);
-    drawCenteredText(
-      bctx,
-      "Press any key to continue",
-      win.width / 2,
-      win.height / 2,
-      cssFont("Calibri", 50, true),
-      [0, 0, 0]
-    );
-
     this.app.music.pause();
   }
 
@@ -33,6 +19,17 @@ export class PauseScene extends Scene {
   }
 
   render(ctx) {
-    ctx.drawImage(this._backdrop, 0, 0);
+    const win = this.config.window;
+    ctx.drawImage(this._backdrop, 0, 0, win.width, win.height);
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.fillRect(0, 0, win.width, win.height);
+    drawCenteredText(
+      ctx,
+      "Press any key to continue",
+      win.width / 2,
+      win.height / 2,
+      cssFont("Calibri", 50, true),
+      [0, 0, 0]
+    );
   }
 }

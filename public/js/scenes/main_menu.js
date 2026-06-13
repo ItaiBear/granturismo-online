@@ -42,6 +42,10 @@ export class MainMenuScene extends Scene {
     this.muteIconRect = { x: 60, y: 10, w: 40, h: 40 };
   }
 
+  onResize() {
+    this._buildLayout();
+  }
+
   _buttonRect() {
     const cx = this.panel.centerX + this.buttonOffsetFromCenter[0];
     const cy = trunc(this.panel.centerY) + this.buttonOffsetFromCenter[1];
