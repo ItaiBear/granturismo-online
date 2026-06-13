@@ -63,10 +63,19 @@ app.post("/api/score", scoreLimiter, async (req, res) => {
 
 // ---- Static game ----
 
-app.use(express.static(PUBLIC_DIR));
+// Always revalidate (via ETag) so a new deploy is picked up immediately through
+// the cloudflare edge and browsers, while unchanged files still 304 cheaply.
+app.use(
+  express.static(PUBLIC_DIR, {
+    etag: true,
+    lastModified: true,
+    setHeaders: (res) => res.setHeader("Cache-Control", "no-cache"),
+  })
+);
 
 // Fallback to the game page for any non-API route.
 app.get(/^(?!\/api\/).*/, (req, res) => {
+  res.setHeader("Cache-Control", "no-cache");
   res.sendFile(path.join(PUBLIC_DIR, "index.html"));
 });
 
