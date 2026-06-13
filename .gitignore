@@ -1,0 +1,9 @@
+node_modules/
+server/data/
+
+# The original desktop Python game has its own repo (ItaiBear/GranTurismo);
+# it lives here on the VPS only as a local reference and is not vendored in.
+GranTurismo/
+*.tmp
+.DS_Store
+npm-debug.log*

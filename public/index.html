@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <title>Gran Turismo</title>
+    <link rel="icon" href="assets/sprites/logo.png" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div id="stage">
+      <canvas id="game" width="1300" height="700"></canvas>
+      <div id="loading">Loading…</div>
+      <div id="nameEntry">
+        <label for="nameInput">Enter your name</label>
+        <input
+          id="nameInput"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          maxlength="6"
+          placeholder="tap to type"
+        />
+      </div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
