@@ -2,6 +2,10 @@
 // web game tunes exactly like the desktop original.
 export const config = {
   window: { width: 1300, height: 700, fps: 60, title: "Gran Turismo" },
+  // Original design size. `window` is mutated at runtime to the live (scaled)
+  // viewport; `design` stays fixed and is used to size centered UI panels so
+  // they keep the original's proportions on any aspect ratio.
+  design: { width: 1300, height: 700 },
   audio: {
     music_file: "assets/audio/Moon Over The Castle.mp3",
     default_volume: 0.4,

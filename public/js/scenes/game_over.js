@@ -51,10 +51,13 @@ export class GameOverScene extends Scene {
 
   _buildLayout() {
     const win = this.config.window;
+    const design = this.config.design;
     const theme = this.config.theme;
 
-    const panelW = trunc(win.width / 2);
-    const panelH = trunc(win.height / 1.4);
+    // Panel keeps its original proportions (sized from the design), centered on
+    // the live (scaled) viewport.
+    const panelW = trunc(design.width / 2);
+    const panelH = trunc(design.height / 1.4);
     this.panelSize = [panelW, panelH];
     const panelBg = makeRoundPanel(this.panelSize, theme.panel_bg, 25, theme.panel_outer_alpha);
     this.panel = new SlidingPanel(this.panelSize, trunc(win.width / 2), trunc(win.height / 2), panelBg, 50.0);
