@@ -12,6 +12,11 @@ import { GameOverScene } from "./scenes/game_over.js";
 const STEP_MS = 1000 / 60;
 const MAX_STEPS = 5; // clamp catch-up after a stall
 
+// The original game's design resolution. The world is scaled uniformly from
+// this so sprites/road/HUD keep their original proportions on any screen.
+const DESIGN_WIDTH = 1300;
+const DESIGN_HEIGHT = 700;
+
 export class App {
   constructor(config, canvas, music, nameEntry) {
     this.config = config;
@@ -49,13 +54,17 @@ export class App {
   // CSS-pixel dimensions to the game world so everything reflows (no letterbox).
   _resize() {
     const dpr = window.devicePixelRatio || 1;
-    const w = Math.max(1, window.innerWidth);
-    const h = Math.max(1, window.innerHeight);
-    this.config.window.width = w;
-    this.config.window.height = h;
-    this.canvas.width = Math.round(w * dpr);
-    this.canvas.height = Math.round(h * dpr);
-    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const vw = Math.max(1, window.innerWidth);
+    const vh = Math.max(1, window.innerHeight);
+    // Largest uniform scale that fits the 1300x700 design; the world then extends
+    // in the looser dimension to fill the viewport (no bars, no distortion, no
+    // cropped HUD). Sprites/road/UI keep the original's proportions.
+    const scale = Math.min(vw / DESIGN_WIDTH, vh / DESIGN_HEIGHT);
+    this.config.window.width = vw / scale;
+    this.config.window.height = vh / scale;
+    this.canvas.width = Math.round(vw * dpr);
+    this.canvas.height = Math.round(vh * dpr);
+    this.ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0);
     if (this.world && this.world.road) this.world.road.resize(this.config);
     if (this.scene && typeof this.scene.onResize === "function") this.scene.onResize();
   }
